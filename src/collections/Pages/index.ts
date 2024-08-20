@@ -13,6 +13,7 @@ import {
 	ImageSliderBlock,
 	MediaAndContentBlock,
 	MediaBlock,
+	ProjectGrid,
 	TabsBlock,
 } from '../../blocks'
 
@@ -70,6 +71,7 @@ const Pages: CollectionConfig = {
 								ImageSliderBlock,
 								MediaAndContentBlock,
 								MediaBlock,
+								ProjectGrid,
 								TabsBlock,
 							],
 						},

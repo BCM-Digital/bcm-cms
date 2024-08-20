@@ -34,6 +34,7 @@ const Media: CollectionConfig = {
 	slug: 'media',
 	admin: {
 		useAsTitle: 'filename',
+		group: 'Uploads',
 	},
 	access: {
 		create: isAdmin,

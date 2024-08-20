@@ -53,7 +53,8 @@ export const MediaBlock: Block = {
 								{
 									label: 'Half',
 									value: 'half',
-								},							{
+								},
+								{
 									label: 'Third',
 									value: 'third',
 								},

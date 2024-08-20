@@ -14,6 +14,7 @@ const Users: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: 'fullName',
+		group: 'Admin',
 	},
 	access: {
 		create: isAdmin,

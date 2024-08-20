@@ -45,11 +45,11 @@ export type BusinessHours =
 
 export interface Config {
   collections: {
-    users: User;
     pages: Page;
+    projects: Project;
     ctas: Cta;
-    'frequently-asked-questions': FrequentlyAskedQuestion;
     media: Media;
+    users: User;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-preferences': PayloadPreference;
@@ -60,30 +60,6 @@ export interface Config {
     contact: Contact;
     footer: Footer;
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  fullName?: string | null;
-  roles: ('admin' | 'public')[];
-  updatedAt: string;
-  createdAt: string;
-  enableAPIKey?: boolean | null;
-  apiKey?: string | null;
-  apiKeyIndex?: string | null;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -103,7 +79,6 @@ export interface Page {
         | ImageSliderBlock
         | MediaAndContentBlock
         | MediaBlock
-        | QuestionsBlock
         | TabsBlock
       )[]
     | null;
@@ -244,6 +219,30 @@ export interface Cta {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  fullName?: string | null;
+  roles: ('admin' | 'public')[];
+  updatedAt: string;
+  createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -580,64 +579,6 @@ export interface EmbeddedVideo {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "QuestionsBlock".
- */
-export interface QuestionsBlock {
-  questionsBlockFields?: {
-    anchorId?: string | null;
-    breadcrumb?: string | null;
-    title?: string | null;
-    richText?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    links?: LinkGroup;
-    faqs?: (string | FrequentlyAskedQuestion)[] | null;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'questions-block';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "frequently-asked-questions".
- */
-export interface FrequentlyAskedQuestion {
-  id: string;
-  title: string;
-  richText?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  author?: (string | null) | User;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TabsBlock".
  */
 export interface TabsBlock {
@@ -688,6 +629,57 @@ export interface TabsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'tabs-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: string;
+  title: string;
+  fullTitle?: string | null;
+  thumbnail?: string | Media | null;
+  publishedAt?: string | null;
+  hero: Hero;
+  layout?:
+    | (
+        | CallToActionBlock
+        | CardsBlock
+        | ContactFormBlock
+        | ImageSliderBlock
+        | MediaAndContentBlock
+        | MediaBlock
+        | TabsBlock
+      )[]
+    | null;
+  relatedProjects?: (string | Project)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Hero".
+ */
+export interface Hero {
+  type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  links?: LinkGroup;
+  media?: string | Media | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -747,7 +739,6 @@ export interface PayloadMigration {
 export interface Header {
   id: string;
   mainMenu?: MainMenu;
-  headerButtons?: LinkGroup;
   updatedAt?: string | null;
   createdAt?: string | null;
 }

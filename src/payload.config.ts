@@ -67,7 +67,7 @@ export default buildConfig({
 		},
 	},
 	editor: lexicalEditor({}),
-	collections: [Users, Pages, Projects, CallsToAction, Media],
+	collections: [Pages, Projects, CallsToAction, Media, Users],
 	globals: [Header, Contact, Footer],
 	rateLimit: {
 		trustProxy: true,
