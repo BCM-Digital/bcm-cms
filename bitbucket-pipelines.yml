@@ -1,0 +1,71 @@
+image: node:20.5.1
+
+# Workflow Configuration
+
+
+definitions:
+  steps:
+    - step:
+          name: 'delete cache if changes in the build dependencies'
+          script:
+            - pipe: atlassian/bitbucket-clear-cache:3.1.1
+              variables:
+                BITBUCKET_USERNAME: $BITBUCKET_USER_NAME
+                BITBUCKET_APP_PASSWORD: $BITBUCKET_APP_PASSWORD
+                CACHES: [ "node" ]
+          condition:
+            changesets:
+              includePaths:
+                - package.json
+    - step: &build
+        name: 'Build'
+        caches:
+          - node
+        script:
+          - yarn cache clean
+          - yarn install --immutable --immutable-cache
+          - NODE_ENV=production npm run build
+
+        artifacts:
+          - dist/**
+          - build/**
+          - node_modules/**
+    - step: &security
+        name: Security Scan
+        script:
+          # Run a security scan for sensitive data.
+          # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
+          - pipe: atlassian/git-secrets-scan:1.5.0
+    - step: &deploy
+        name: 'Deploy'
+        deployment: test
+        script:
+          - pipe: atlassian/rsync-deploy:0.12.0
+            variables:
+              USER: $USER
+              SERVER: $SERVER
+              REMOTE_PATH: $REMOTE_PATH
+              SSH_KEY: $SSH_KEY
+              LOCAL_PATH: '.'
+              EXTRA_ARGS: '--exclude-from=deployment-exclude-list.txt'
+              DEBUG: 'true'
+              SSH_ARGS: $SSH_ARGS
+          - pipe: atlassian/ssh-run:0.8.0
+            variables:
+              SSH_USER: $USER
+              SERVER: $SERVER
+              SSH_KEY: $SSH_KEY
+              COMMAND: 'mkdir -p "${REMOTE_PATH}/tmp" && touch "${REMOTE_PATH}/tmp/restart.txt"'
+
+pipelines:
+  branches:
+    staging:
+      - step: *build
+      - step:
+          <<: *deploy
+          deployment: staging
+    production:
+      - step: *build
+      - step:
+          <<: *deploy
+          deployment: production

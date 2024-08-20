@@ -1,0 +1,68 @@
+{
+  "name": "business-template",
+  "description": "",
+  "version": "1.0.0",
+  "main": "dist/server.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts nodemon",
+    "build:payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload build",
+    "build:server": "tsc",
+    "build": "yarn copyfiles && yarn build:payload && yarn build:server",
+    "serve": "cross-env PAYLOAD_CONFIG_PATH=dist/payload.config.js NODE_ENV=production node dist/server.js",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png}\" dist/",
+    "format": "prettier --write .",
+    "pre-commit": "lint-staged",
+    "regenerate": "PAYLOAD_CONFIG_PATH=dist/payload.config.js node ./regenerateMediaSizes.js",
+    "generate:types": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types",
+    "generate:graphQLSchema": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:graphQLSchema",
+    "payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@payloadcms/bundler-webpack": "^1.0.7",
+    "@payloadcms/db-mongodb": "^1.7.2",
+    "@payloadcms/plugin-form-builder": "^1.2.2",
+    "@payloadcms/plugin-nested-docs": "^1.0.12",
+    "@payloadcms/plugin-seo": "^2.3.2",
+    "@payloadcms/richtext-lexical": "^0.11.3",
+    "@react-email/container": "^0.0.13",
+    "@react-email/head": "^0.0.10",
+    "@react-email/html": "^0.0.9",
+    "@react-email/img": "^0.0.9",
+    "@react-email/link": "^0.0.9",
+    "@react-email/render": "^0.0.17",
+    "@react-email/section": "^0.0.13",
+    "@react-email/tailwind": "0.0.19",
+    "@react-email/text": "^0.0.9",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "html-react-parser": "^5.1.12",
+    "nodemailer-sendgrid": "^1.0.3",
+    "payload": "^2.26.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/nodemailer-sendgrid": "^1.0.3",
+    "copyfiles": "^2.4.1",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.9",
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  },
+  "lint-staged": {
+    "./*.{js,ts,tsx}": [
+      "prettier --write ."
+    ],
+    "./**/*.{js,ts,tsx}": [
+      "prettier --write ."
+    ]
+  },
+  "volta": {
+    "node": "21.6.1",
+    "npm": "10.2.4"
+  }
+}

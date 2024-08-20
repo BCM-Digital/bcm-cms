@@ -1,0 +1,109 @@
+import { CollectionConfig } from 'payload/types'
+
+import { isAdminsOrPublished } from '../../access/isAdminsOrPublished'
+import { isAdmin } from '../../access/isAdmin'
+
+import { revalidateProject } from './hooks/revalidateProject'
+import { slugField } from '../../fields/slug'
+
+import { fullTitle } from '../../fields/fullTitle'
+import { hero } from '../../fields/hero'
+
+import {
+	CallToActionBlock,
+	CardsBlock,
+	ContactFormBlock,
+	ImageSliderBlock,
+	MediaAndContentBlock,
+	MediaBlock,
+	TabsBlock,
+} from '../../blocks'
+
+const Projects: CollectionConfig = {
+	slug: 'projects',
+	admin: {
+		useAsTitle: 'fullTitle',
+		defaultColumns: ['fullTitle', 'author', 'createdAt', 'status'],
+		group: 'Content',
+	},
+	access: {
+		create: isAdmin,
+		read: isAdminsOrPublished,
+		readVersions: isAdmin,
+		update: isAdmin,
+		delete: isAdmin,
+	},
+	versions: {
+		drafts: true,
+	},
+	hooks: {
+		afterChange: [revalidateProject],
+	},
+	fields: [
+		{
+			name: 'title',
+			label: 'Title',
+			type: 'text',
+			required: true,
+			localized: true,
+		},
+		fullTitle,
+		{
+			name: 'thumbnail',
+			type: 'upload',
+			relationTo: 'media',
+			admin: {
+				position: 'sidebar',
+			},
+		},
+		{
+			name: 'publishedAt',
+			type: 'date',
+			admin: {
+				position: 'sidebar',
+			},
+		},
+		{
+			type: 'tabs',
+			tabs: [
+				{
+					label: 'Hero',
+					fields: [hero],
+				},
+				{
+					label: 'Content',
+					fields: [
+						{
+							name: 'layout',
+							type: 'blocks',
+							blocks: [
+								CallToActionBlock,
+								CardsBlock,
+								ContactFormBlock,
+								ImageSliderBlock,
+								MediaAndContentBlock,
+								MediaBlock,
+								TabsBlock,
+							],
+						},
+					],
+				},
+			],
+		},
+		{
+			name: 'relatedProjects',
+			type: 'relationship',
+			relationTo: 'projects',
+			hasMany: true,
+			filterOptions: ({ id }) => {
+				return {
+					id: {
+						not_in: [id],
+					},
+				}
+			},
+		},
+	],
+}
+
+export default Projects

@@ -1,0 +1,9 @@
+/.*
+media/*
+src/*
+./src/*
+.git/*.
+.husky/*
+bitbucket-pipelines.yml
+deployment-exclude-list.txt
+README.md
