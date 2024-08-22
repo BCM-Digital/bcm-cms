@@ -1,11 +1,8 @@
 import { CollectionConfig } from 'payload/types'
-
 import { isAdminsOrPublished } from '../../access/isAdminsOrPublished'
 import { isAdmin } from '../../access/isAdmin'
-
 import { revalidateProject } from './hooks/revalidateProject'
 import { slugField } from '../../fields/slug'
-
 import { fullTitle } from '../../fields/fullTitle'
 import { hero } from '../../fields/hero'
 
@@ -56,6 +53,7 @@ const Projects: CollectionConfig = {
 				position: 'sidebar',
 			},
 		},
+		slugField(),
 		{
 			name: 'publishedAt',
 			type: 'date',

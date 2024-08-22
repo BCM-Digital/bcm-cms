@@ -9,13 +9,17 @@ export const ProjectGrid: Block = {
 			name: 'projectGridFields',
 			type: 'group',
 			fields: [
-				richText(),
+				richText({
+					name: 'introText',
+					label: 'Intro Text',
+				}),
 				{
 					name: 'tiles',
 					label: 'Grid Tiles',
 					type: 'array',
 					required: true,
 					minRows: 1,
+					maxRows: 18,
 					fields: [
 						{
 							name: 'type',
@@ -42,10 +46,6 @@ export const ProjectGrid: Block = {
 							defaultValue: 'oneThird',
 							options: [
 								{
-									value: 'oneQuarter',
-									label: 'One Quarter',
-								},
-								{
 									value: 'oneThird',
 									label: 'One Third',
 								},
@@ -58,18 +58,14 @@ export const ProjectGrid: Block = {
 									label: 'Two Thirds',
 								},
 								{
-									value: 'threeQuarters',
-									label: 'Three Quarters',
-								},
-								{
 									value: 'full',
 									label: 'Full',
 								},
 							],
 						},
 						{
-							type: 'relationship',
 							name: 'project',
+							type: 'relationship',
 							relationTo: 'projects',
 							admin: {
 								condition: (_, siblingData) => siblingData.type === 'project',
@@ -91,7 +87,6 @@ export const ProjectGrid: Block = {
 								condition: (_, siblingData) => siblingData.type === 'text',
 							},
 						}),
-						// To Do: Fix this lazy approach
 						{
 							name: 'invertBackground',
 							type: 'checkbox',

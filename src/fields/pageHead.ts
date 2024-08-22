@@ -1,5 +1,5 @@
 import { Field } from 'payload/types'
-import linkGroup from "./linkGroup";
+import linkGroup from './linkGroup'
 
 const pageHead: Field = {
 	name: 'pageHead',
@@ -26,14 +26,13 @@ const pageHead: Field = {
 			name: 'breadcrumb',
 			type: 'text',
 			admin: {
-				condition: ( _, siblingData) => siblingData.type === 'basic'
-			}
+				condition: (_, siblingData) => siblingData.type === 'basic',
+			},
 		},
 		{
 			name: 'title',
 			label: 'Title',
 			type: 'text',
-			required: true
 		},
 		{
 			name: 'content',
@@ -44,8 +43,8 @@ const pageHead: Field = {
 			overrides: {
 				maxRows: 2,
 				admin: {
-					condition: ( _, siblingData) => siblingData.type === 'hero',
-				}
+					condition: (_, siblingData) => siblingData.type === 'hero',
+				},
 			},
 		}),
 		{
@@ -54,12 +53,11 @@ const pageHead: Field = {
 			type: 'upload',
 			relationTo: 'media',
 			admin: {
-				condition: ( _, siblingData) => siblingData.type === 'hero',
+				condition: (_, siblingData) => siblingData.type === 'hero',
 				description:
 					'Maximum upload file size: 12MB. Recommended file size for images is <500KB.',
 			},
 		},
-
 	],
 }
 
