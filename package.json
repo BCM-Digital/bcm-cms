@@ -26,15 +26,15 @@
     "@payloadcms/plugin-nested-docs": "^1.0.12",
     "@payloadcms/plugin-seo": "^2.3.2",
     "@payloadcms/richtext-lexical": "^0.11.3",
-    "@react-email/container": "^0.0.13",
-    "@react-email/head": "^0.0.10",
-    "@react-email/html": "^0.0.9",
-    "@react-email/img": "^0.0.9",
-    "@react-email/link": "^0.0.9",
-    "@react-email/render": "^0.0.17",
-    "@react-email/section": "^0.0.13",
-    "@react-email/tailwind": "0.0.19",
-    "@react-email/text": "^0.0.9",
+    "@react-email/container": "^0.0.14",
+    "@react-email/head": "^0.0.11",
+    "@react-email/html": "^0.0.10",
+    "@react-email/img": "^0.0.10",
+    "@react-email/link": "^0.0.10",
+    "@react-email/render": "^1.0.0",
+    "@react-email/section": "^0.0.14",
+    "@react-email/tailwind": "0.1.0",
+    "@react-email/text": "^0.0.10",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
@@ -46,7 +46,7 @@
     "@types/express": "^4.17.21",
     "@types/nodemailer-sendgrid": "^1.0.3",
     "copyfiles": "^2.4.1",
-    "husky": "^9.1.4",
+    "husky": "^9.1.5",
     "lint-staged": "^15.2.9",
     "nodemon": "^3.1.4",
     "prettier": "^3.3.3",
@@ -64,5 +64,6 @@
   "volta": {
     "node": "21.6.1",
     "npm": "10.2.4"
-  }
+  },
+  "packageManager": "yarn@4.4.0"
 }

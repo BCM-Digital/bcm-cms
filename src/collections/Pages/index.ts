@@ -55,7 +55,7 @@ const Pages: CollectionConfig = {
 			type: 'tabs',
 			tabs: [
 				{
-					label: 'Page head',
+					label: 'Page Header',
 					fields: [pageHead],
 				},
 				{

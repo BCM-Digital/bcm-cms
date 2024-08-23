@@ -23,7 +23,7 @@ const pageHead: Field = {
 			],
 		},
 		{
-			name: 'breadcrumb',
+			name: 'subhead',
 			type: 'text',
 			admin: {
 				condition: (_, siblingData) => siblingData.type === 'basic',

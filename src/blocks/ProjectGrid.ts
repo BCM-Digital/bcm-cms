@@ -41,7 +41,7 @@ export const ProjectGrid: Block = {
 							],
 						},
 						{
-							name: 'size',
+							name: 'width',
 							type: 'select',
 							defaultValue: 'oneThird',
 							options: [
@@ -62,6 +62,11 @@ export const ProjectGrid: Block = {
 									label: 'Full',
 								},
 							],
+						},
+						{
+							name: 'height',
+							label: 'Toggle Double Height',
+							type: 'checkbox',
 						},
 						{
 							name: 'project',

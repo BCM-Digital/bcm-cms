@@ -3,8 +3,7 @@ import { isAdminsOrPublished } from '../../access/isAdminsOrPublished'
 import { isAdmin } from '../../access/isAdmin'
 import { revalidateProject } from './hooks/revalidateProject'
 import { slugField } from '../../fields/slug'
-import { fullTitle } from '../../fields/fullTitle'
-import { hero } from '../../fields/hero'
+import pageHead from '../../fields/pageHead'
 
 import {
 	CallToActionBlock,
@@ -19,8 +18,8 @@ import {
 const Projects: CollectionConfig = {
 	slug: 'projects',
 	admin: {
-		useAsTitle: 'fullTitle',
-		defaultColumns: ['fullTitle', 'author', 'createdAt', 'status'],
+		useAsTitle: 'title',
+		defaultColumns: ['title', 'author', 'createdAt', 'status'],
 		group: 'Content',
 	},
 	access: {
@@ -44,7 +43,6 @@ const Projects: CollectionConfig = {
 			required: true,
 			localized: true,
 		},
-		fullTitle,
 		{
 			name: 'thumbnail',
 			type: 'upload',
@@ -65,8 +63,8 @@ const Projects: CollectionConfig = {
 			type: 'tabs',
 			tabs: [
 				{
-					label: 'Hero',
-					fields: [hero],
+					label: 'Page Header',
+					fields: [pageHead],
 				},
 				{
 					label: 'Content',
