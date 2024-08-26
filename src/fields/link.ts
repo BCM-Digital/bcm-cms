@@ -102,7 +102,7 @@ const link: LinkType = ({
 			},
 			label: 'Document to link to',
 			maxDepth: 1,
-			relationTo: ['pages'],
+			relationTo: ['pages'], // You need to add any collection here you wish to link too
 			// required: true,
 			type: 'relationship',
 		},
