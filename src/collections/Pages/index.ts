@@ -1,13 +1,14 @@
-import { populateAuthor } from '../../hooks/populateAuthor'
-import { isAdminsOrPublished } from '../../access/isAdminsOrPublished'
 import { CollectionConfig } from 'payload/types'
+
 import { isAdmin } from '../../access/isAdmin'
-import { revalidatePage } from './hooks/revalidatePage'
-import { slugField } from '../../fields/slug'
+import { isAdminsOrPublished } from '../../access/isAdminsOrPublished'
+
 import { fullTitle } from '../../fields/fullTitle'
+import { populateAuthor } from '../../hooks/populateAuthor'
+
 import pageHead from '../../fields/pageHead'
 import {
-	CallToActionBlock,
+	ArchiveBlock,
 	CardsBlock,
 	ContactFormBlock,
 	ImageSliderBlock,
@@ -16,6 +17,9 @@ import {
 	ProjectGrid,
 	TabsBlock,
 } from '../../blocks'
+
+import { slugField } from '../../fields/slug'
+import { revalidatePage } from './hooks/revalidatePage'
 
 const Pages: CollectionConfig = {
 	slug: 'pages',
@@ -65,7 +69,7 @@ const Pages: CollectionConfig = {
 							name: 'layout',
 							type: 'blocks',
 							blocks: [
-								CallToActionBlock,
+								ArchiveBlock,
 								CardsBlock,
 								ContactFormBlock,
 								ImageSliderBlock,

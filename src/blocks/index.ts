@@ -1,4 +1,4 @@
-export { CallToActionBlock } from '../blocks/CallToActionBlock'
+export { ArchiveBlock } from './ArchiveBlock'
 export { CardsBlock } from '../blocks/CardsBlock'
 export { ContactFormBlock } from '../blocks/ContactFormBlock'
 export { ImageSliderBlock } from '../blocks/ImageSliderBlock'

@@ -47,8 +47,9 @@ export interface Config {
   collections: {
     pages: Page;
     projects: Project;
-    ctas: Cta;
+    posts: Post;
     media: Media;
+    categories: Category;
     users: User;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -59,6 +60,7 @@ export interface Config {
     header: Header;
     contact: Contact;
     footer: Footer;
+    settings: Setting;
   };
 }
 /**
@@ -73,7 +75,57 @@ export interface Page {
   pageHead?: PageHead;
   layout?:
     | (
-        | CallToActionBlock
+        | {
+            archiveBlockFields?: {
+              introContent?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: string;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              populateBy?: ('collection' | 'selection') | null;
+              relationTo?: ('posts' | 'projects') | null;
+              categories?: (string | Category)[] | null;
+              limit?: number | null;
+              selectedDocs?:
+                | (
+                    | {
+                        relationTo: 'posts';
+                        value: string | Post;
+                      }
+                    | {
+                        relationTo: 'projects';
+                        value: string | Project;
+                      }
+                  )[]
+                | null;
+              populatedDocs?:
+                | (
+                    | {
+                        relationTo: 'posts';
+                        value: string | Post;
+                      }
+                    | {
+                        relationTo: 'projects';
+                        value: string | Project;
+                      }
+                  )[]
+                | null;
+              populatedDocsTotal?: number | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'archive';
+          }
         | CardsBlock
         | ContactFormBlock
         | ImageSliderBlock
@@ -86,11 +138,6 @@ export interface Page {
   slug?: string | null;
   author?: (string | null) | User;
   featureImage?: string | Media | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    image?: string | Media | null;
-  };
   parent?: (string | null) | Page;
   breadcrumbs?:
     | {
@@ -179,44 +226,34 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock".
+ * via the `definition` "categories".
  */
-export interface CallToActionBlock {
-  ctaBlockFields: {
-    anchorId?: string | null;
-    gridLayout: 'fullwidth' | 'fullscreen';
-    cta?: (string | null) | Cta;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'cta-block';
+export interface Category {
+  id: string;
+  title?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ctas".
+ * via the `definition` "posts".
  */
-export interface Cta {
+export interface Post {
   id: string;
-  type: 'basic' | 'image';
   title: string;
-  richText?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  links?: LinkGroup;
-  author?: (string | null) | User;
-  featureImage?: string | Media | null;
+  categories?: (string | Category)[] | null;
+  publishedAt?: string | null;
+  authors?: (string | User)[] | null;
+  populatedAuthor?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  pageHead?: PageHead;
+  layout: (CardsBlock | ContactFormBlock | ImageSliderBlock | MediaAndContentBlock | MediaBlock | TabsBlock)[];
+  relatedPosts?: (string | Post)[] | null;
+  slug?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -580,83 +617,6 @@ export interface EmbeddedVideo {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProjectGrid".
- */
-export interface ProjectGrid {
-  projectGridFields: {
-    introText?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    tiles: {
-      type?: ('project' | 'image' | 'text') | null;
-      width?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
-      height?: boolean | null;
-      project?: (string | null) | Project;
-      image?: string | Media | null;
-      tileText?: {
-        root: {
-          type: string;
-          children: {
-            type: string;
-            version: number;
-            [k: string]: unknown;
-          }[];
-          direction: ('ltr' | 'rtl') | null;
-          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-          indent: number;
-          version: number;
-        };
-        [k: string]: unknown;
-      } | null;
-      invertBackground?: boolean | null;
-      id?: string | null;
-    }[];
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'project-grid';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projects".
- */
-export interface Project {
-  id: string;
-  title: string;
-  thumbnail?: string | Media | null;
-  slug?: string | null;
-  publishedAt?: string | null;
-  pageHead?: PageHead;
-  layout?:
-    | (
-        | CallToActionBlock
-        | CardsBlock
-        | ContactFormBlock
-        | ImageSliderBlock
-        | MediaAndContentBlock
-        | MediaBlock
-        | TabsBlock
-      )[]
-    | null;
-  relatedProjects?: (string | Project)[] | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TabsBlock".
  */
 export interface TabsBlock {
@@ -707,6 +667,73 @@ export interface TabsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'tabs-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: string;
+  title: string;
+  thumbnail?: string | Media | null;
+  publishedAt?: string | null;
+  pageHead?: PageHead;
+  layout?: (CardsBlock | ContactFormBlock | ImageSliderBlock | MediaAndContentBlock | MediaBlock | TabsBlock)[] | null;
+  slug?: string | null;
+  relatedProjects?: (string | Project)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectGrid".
+ */
+export interface ProjectGrid {
+  projectGridFields: {
+    introText?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    tiles: {
+      type?: ('project' | 'image' | 'text') | null;
+      width?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
+      height?: boolean | null;
+      project?: (string | null) | Project;
+      image?: string | Media | null;
+      tileText?: {
+        root: {
+          type: string;
+          children: {
+            type: string;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      } | null;
+      invertBackground?: boolean | null;
+      id?: string | null;
+    }[];
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'project-grid';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -870,6 +897,24 @@ export interface Footer {
  */
 export interface Menu {
   menuItem?: MenuItem;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "settings".
+ */
+export interface Setting {
+  id: string;
+  pageSettings?: PageSettings;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PageSettings".
+ */
+export interface PageSettings {
+  postsPage?: (string | null) | Page;
+  projectsPage?: (string | null) | Page;
 }
 
 

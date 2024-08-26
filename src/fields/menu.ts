@@ -9,7 +9,6 @@ type Menu = (options?: { overrides?: Record<string, unknown> }) => Field
 const menu: Menu = ({ overrides = {} } = {}) => {
 	const generatedMenu: Field = {
 		name: 'menuItem',
-		label: 'Menu item',
 		type: 'array',
 		interfaceName: 'MenuItem',
 		fields: [
@@ -40,15 +39,14 @@ const menu: Menu = ({ overrides = {} } = {}) => {
 				label: 'Label',
 				required: true,
 				type: 'text',
-
 			},
 			link({
 				appearances: false,
 				overrides: {
 					admin: {
-						condition: (_, siblingData ) => siblingData.type !== 'submenu',
-					}
-				}
+						condition: (_, siblingData) => siblingData.type !== 'submenu',
+					},
+				},
 			}),
 			{
 				name: 'submenu',

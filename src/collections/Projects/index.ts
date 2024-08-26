@@ -1,12 +1,10 @@
 import { CollectionConfig } from 'payload/types'
-import { isAdminsOrPublished } from '../../access/isAdminsOrPublished'
-import { isAdmin } from '../../access/isAdmin'
-import { revalidateProject } from './hooks/revalidateProject'
-import { slugField } from '../../fields/slug'
-import pageHead from '../../fields/pageHead'
 
+import { isAdmin } from '../../access/isAdmin'
+import { isAdminsOrPublished } from '../../access/isAdminsOrPublished'
+
+import pageHead from '../../fields/pageHead'
 import {
-	CallToActionBlock,
 	CardsBlock,
 	ContactFormBlock,
 	ImageSliderBlock,
@@ -15,11 +13,14 @@ import {
 	TabsBlock,
 } from '../../blocks'
 
+import { slugField } from '../../fields/slug'
+import { revalidateProject } from './hooks/revalidateProject'
+
 const Projects: CollectionConfig = {
 	slug: 'projects',
 	admin: {
 		useAsTitle: 'title',
-		defaultColumns: ['title', 'author', 'createdAt', 'status'],
+		defaultColumns: ['title', 'createdAt', 'status'],
 		group: 'Content',
 	},
 	access: {
@@ -51,7 +52,6 @@ const Projects: CollectionConfig = {
 				position: 'sidebar',
 			},
 		},
-		slugField(),
 		{
 			name: 'publishedAt',
 			type: 'date',
@@ -73,7 +73,6 @@ const Projects: CollectionConfig = {
 							name: 'layout',
 							type: 'blocks',
 							blocks: [
-								CallToActionBlock,
 								CardsBlock,
 								ContactFormBlock,
 								ImageSliderBlock,
@@ -86,6 +85,7 @@ const Projects: CollectionConfig = {
 				},
 			],
 		},
+		slugField(),
 		{
 			name: 'relatedProjects',
 			type: 'relationship',

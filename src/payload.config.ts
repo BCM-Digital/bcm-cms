@@ -1,25 +1,35 @@
-import path from 'path'
+import { webpackBundler } from '@payloadcms/bundler-webpack'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
 
 import nestedDocs from '@payloadcms/plugin-nested-docs'
-import seo from '@payloadcms/plugin-seo'
+import redirects from '@payloadcms/plugin-redirects'
 import formBuilder from '@payloadcms/plugin-form-builder'
-import { mongooseAdapter } from '@payloadcms/db-mongodb'
-import { webpackBundler } from '@payloadcms/bundler-webpack'
+
+import seo from '@payloadcms/plugin-seo'
+import type { GenerateTitle } from '@payloadcms/plugin-seo/types'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+
+import path from 'path'
 import { buildConfig } from 'payload/config'
 
 // Collections
-import Users from './collections/Users'
-import Pages from './collections/Pages'
-import Projects from './collections/Projects'
+import Categories from './collections/Categories'
 import Media from './collections/Media'
+import Pages from './collections/Pages'
+import Posts from './collections/Posts'
+import Projects from './collections/Projects'
+import Users from './collections/Users'
 
 // Globals
-import Header from './globals/Header'
 import Contact from './globals/Contact'
+import Header from './globals/Header'
 import Footer from './globals/Footer'
+import Settings from './globals/Settings'
 import EmailHtml from './utilities/EmailHtml'
-import CallsToAction from './collections/CallsToAction'
+
+const generateTitle: GenerateTitle = () => {
+	return 'BCM'
+}
 
 const PAYLOAD_PUBLIC_SERVER_URL =
 	process.env.PAYLOAD_PUBLIC_SERVER_URL || 'https://cms.business-template.com'
@@ -28,12 +38,11 @@ const PAYLOAD_PUBLIC_NEXT_SERVER_URL =
 	'https://www.business-template.com'
 
 export default buildConfig({
-	serverURL: PAYLOAD_PUBLIC_SERVER_URL,
 	admin: {
 		user: Users.slug,
 		bundler: webpackBundler(),
 		livePreview: {
-			collections: ['pages'],
+			collections: ['pages, projects'],
 			url: ({ data, documentInfo, locale }) =>
 				`${PAYLOAD_PUBLIC_NEXT_SERVER_URL}/${
 					data.slug !== 'home' ? data.slug : ''
@@ -67,8 +76,12 @@ export default buildConfig({
 		},
 	},
 	editor: lexicalEditor({}),
-	collections: [Pages, Projects, CallsToAction, Media, Users],
-	globals: [Header, Contact, Footer],
+	db: mongooseAdapter({
+		url: process.env.DATABASE_URI,
+	}),
+	serverURL: PAYLOAD_PUBLIC_SERVER_URL,
+	collections: [Pages, Projects, Posts, Media, Categories, Users],
+	globals: [Header, Contact, Footer, Settings],
 	rateLimit: {
 		trustProxy: true,
 		window: 2 * 60 * 1000, // 2 minutes
@@ -106,7 +119,7 @@ export default buildConfig({
 			},
 		}),
 		seo({
-			collections: ['pages'],
+			collections: ['pages, projects'],
 			generateTitle: ({ doc, locale, ...docInfo }: any) =>
 				`${doc?.title?.value} | Business template`,
 			generateDescription: ({ doc, locale, ...docInfo }: any) =>
@@ -143,7 +156,4 @@ export default buildConfig({
 		PAYLOAD_PUBLIC_NEXT_SERVER_URL,
 		PAYLOAD_PUBLIC_SERVER_URL,
 	].filter(Boolean),
-	db: mongooseAdapter({
-		url: process.env.DATABASE_URI,
-	}),
 })
