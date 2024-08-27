@@ -33,7 +33,14 @@ export const appearanceOptions = {
 	},
 }
 
-export type LinkAppearances = 'primary' | 'primary-outline' | 'secondary' | 'secondary-outline' | 'white' | 'white-outline' | 'text'
+export type LinkAppearances =
+	| 'primary'
+	| 'primary-outline'
+	| 'secondary'
+	| 'secondary-outline'
+	| 'white'
+	| 'white-outline'
+	| 'text'
 
 type LinkType = (options?: {
 	appearances?: LinkAppearances[] | false
@@ -102,7 +109,7 @@ const link: LinkType = ({
 			},
 			label: 'Document to link to',
 			maxDepth: 1,
-			relationTo: ['pages'], // You need to add any collection here you wish to link too
+			relationTo: ['pages', 'projects', 'posts'], // You need to add any collection here you wish to link too
 			// required: true,
 			type: 'relationship',
 		},
@@ -158,7 +165,9 @@ const link: LinkType = ({
 		]
 
 		if (appearances) {
-			appearanceOptionsToUse = appearances.map((appearance) => appearanceOptions[appearance])
+			appearanceOptionsToUse = appearances.map(
+				(appearance) => appearanceOptions[appearance]
+			)
 		}
 
 		linkResult.fields.push({

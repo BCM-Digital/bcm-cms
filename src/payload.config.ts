@@ -119,7 +119,7 @@ export default buildConfig({
 			},
 		}),
 		seo({
-			collections: ['pages, projects'],
+			collections: ['pages', 'projects'],
 			generateTitle: ({ doc, locale, ...docInfo }: any) =>
 				`${doc?.title?.value} | Business template`,
 			generateDescription: ({ doc, locale, ...docInfo }: any) =>
