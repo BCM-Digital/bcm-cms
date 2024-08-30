@@ -42,7 +42,7 @@ export default buildConfig({
 		user: Users.slug,
 		bundler: webpackBundler(),
 		livePreview: {
-			collections: ['pages, projects'],
+			collections: ['pages', 'projects'],
 			url: ({ data, documentInfo, locale }) =>
 				`${PAYLOAD_PUBLIC_NEXT_SERVER_URL}/${
 					data.slug !== 'home' ? data.slug : ''

@@ -202,10 +202,11 @@ export interface Project {
   id: string;
   title: string;
   thumbnail?: string | Media | null;
+  slug?: string | null;
+  categories?: (string | Category)[] | null;
   publishedAt?: string | null;
   pageHead?: PageHead;
   layout?: (CardsBlock | ContactFormBlock | ImageSliderBlock | MediaAndContentBlock | MediaBlock | TabsBlock)[] | null;
-  slug?: string | null;
   relatedProjects?: (string | Project)[] | null;
   meta?: {
     title?: string | null;
@@ -259,6 +260,16 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  title?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -669,16 +680,6 @@ export interface Post {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: string;
-  title?: string | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

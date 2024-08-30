@@ -52,6 +52,16 @@ const Projects: CollectionConfig = {
 				position: 'sidebar',
 			},
 		},
+		slugField(),
+		{
+			name: 'categories',
+			type: 'relationship',
+			relationTo: 'categories',
+			hasMany: true,
+			admin: {
+				position: 'sidebar',
+			},
+		},
 		{
 			name: 'publishedAt',
 			type: 'date',
@@ -85,7 +95,6 @@ const Projects: CollectionConfig = {
 				},
 			],
 		},
-		slugField(),
 		{
 			name: 'relatedProjects',
 			type: 'relationship',
