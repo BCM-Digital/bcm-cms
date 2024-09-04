@@ -47,7 +47,7 @@ export interface Config {
   collections: {
     pages: Page;
     projects: Project;
-    posts: Post;
+    news: News;
     media: Media;
     categories: Category;
     users: User;
@@ -75,57 +75,7 @@ export interface Page {
   pageHead?: PageHead;
   layout?:
     | (
-        | {
-            archiveBlockFields?: {
-              introContent?: {
-                root: {
-                  type: string;
-                  children: {
-                    type: string;
-                    version: number;
-                    [k: string]: unknown;
-                  }[];
-                  direction: ('ltr' | 'rtl') | null;
-                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                  indent: number;
-                  version: number;
-                };
-                [k: string]: unknown;
-              } | null;
-              populateBy?: ('collection' | 'selection') | null;
-              relationTo?: ('posts' | 'projects') | null;
-              categories?: (string | Category)[] | null;
-              limit?: number | null;
-              selectedDocs?:
-                | (
-                    | {
-                        relationTo: 'posts';
-                        value: string | Post;
-                      }
-                    | {
-                        relationTo: 'projects';
-                        value: string | Project;
-                      }
-                  )[]
-                | null;
-              populatedDocs?:
-                | (
-                    | {
-                        relationTo: 'posts';
-                        value: string | Post;
-                      }
-                    | {
-                        relationTo: 'projects';
-                        value: string | Project;
-                      }
-                  )[]
-                | null;
-              populatedDocsTotal?: number | null;
-            };
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'archive';
-          }
+        | ArchiveBlock
         | CardsBlock
         | ContactFormBlock
         | ImageSliderBlock
@@ -185,8 +135,8 @@ export interface Link {
         value: string | Project;
       } | null)
     | ({
-        relationTo: 'posts';
-        value: string | Post;
+        relationTo: 'news';
+        value: string | News;
       } | null);
   url?: string | null;
   label: string;
@@ -659,51 +609,81 @@ export interface TabsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
+ * via the `definition` "news".
  */
-export interface Post {
+export interface News {
   id: string;
   title: string;
+  thumbnail?: string | Media | null;
+  slug?: string | null;
   categories?: (string | Category)[] | null;
   publishedAt?: string | null;
-  authors?: (string | User)[] | null;
-  populatedAuthor?:
-    | {
-        id?: string | null;
-        name?: string | null;
-      }[]
-    | null;
   pageHead?: PageHead;
   layout: (CardsBlock | ContactFormBlock | ImageSliderBlock | MediaAndContentBlock | MediaBlock | TabsBlock)[];
-  relatedPosts?: (string | Post)[] | null;
-  slug?: string | null;
+  relatedArticles?: (string | News)[] | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    image?: string | Media | null;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "ArchiveBlock".
  */
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  fullName?: string | null;
-  roles: ('admin' | 'public')[];
-  updatedAt: string;
-  createdAt: string;
-  enableAPIKey?: boolean | null;
-  apiKey?: string | null;
-  apiKeyIndex?: string | null;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password: string | null;
+export interface ArchiveBlock {
+  archiveBlockFields?: {
+    introContent?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    populateBy?: ('collection' | 'selection') | null;
+    relationTo?: ('news' | 'projects') | null;
+    categories?: (string | Category)[] | null;
+    limit?: number | null;
+    selectedDocs?:
+      | (
+          | {
+              relationTo: 'news';
+              value: string | News;
+            }
+          | {
+              relationTo: 'projects';
+              value: string | Project;
+            }
+        )[]
+      | null;
+    populatedDocs?:
+      | (
+          | {
+              relationTo: 'news';
+              value: string | News;
+            }
+          | {
+              relationTo: 'projects';
+              value: string | Project;
+            }
+        )[]
+      | null;
+    populatedDocsTotal?: number | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'archive-block';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -754,6 +734,30 @@ export interface ProjectGrid {
   id?: string | null;
   blockName?: string | null;
   blockType: 'project-grid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  fullName?: string | null;
+  roles: ('admin' | 'public')[];
+  updatedAt: string;
+  createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -933,7 +937,7 @@ export interface Setting {
  * via the `definition` "PageSettings".
  */
 export interface PageSettings {
-  postsPage?: (string | null) | Page;
+  newsPage?: (string | null) | Page;
   projectsPage?: (string | null) | Page;
 }
 

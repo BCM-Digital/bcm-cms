@@ -16,10 +16,10 @@ const Settings: GlobalConfig = {
 			interfaceName: 'PageSettings',
 			fields: [
 				{
-					name: 'postsPage',
+					name: 'newsPage',
 					type: 'relationship',
 					relationTo: 'pages',
-					label: 'Posts page',
+					label: 'News page',
 				},
 				{
 					name: 'projectsPage',

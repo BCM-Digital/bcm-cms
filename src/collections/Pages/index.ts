@@ -90,7 +90,7 @@ const Pages: CollectionConfig = {
 			type: 'relationship',
 			hooks: {
 				beforeChange: [
-					// By using a hook to set the author, admins cannot change the author as is allowed in the posts
+					// By using a hook to set the author, admins cannot change the author as is allowed in the news
 					// collections that has a defaultValue property to populates it and allow changing in the UI
 					populateAuthor,
 				],

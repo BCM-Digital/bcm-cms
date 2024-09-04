@@ -16,7 +16,7 @@ import { buildConfig } from 'payload/config'
 import Categories from './collections/Categories'
 import Media from './collections/Media'
 import Pages from './collections/Pages'
-import Posts from './collections/Posts'
+import Articles from './collections/Articles'
 import Projects from './collections/Projects'
 import Users from './collections/Users'
 
@@ -38,6 +38,7 @@ const PAYLOAD_PUBLIC_NEXT_SERVER_URL =
 	'https://www.business-template.com'
 
 export default buildConfig({
+	serverURL: PAYLOAD_PUBLIC_SERVER_URL,
 	admin: {
 		user: Users.slug,
 		bundler: webpackBundler(),
@@ -80,7 +81,7 @@ export default buildConfig({
 		url: process.env.DATABASE_URI,
 	}),
 	serverURL: PAYLOAD_PUBLIC_SERVER_URL,
-	collections: [Pages, Projects, Posts, Media, Categories, Users],
+	collections: [Pages, Projects, Articles, Media, Categories, Users],
 	globals: [Header, Contact, Footer, Settings],
 	rateLimit: {
 		trustProxy: true,
@@ -119,7 +120,7 @@ export default buildConfig({
 			},
 		}),
 		seo({
-			collections: ['pages', 'projects'],
+			collections: ['pages', 'projects', 'news'],
 			generateTitle: ({ doc, locale, ...docInfo }: any) =>
 				`${doc?.title?.value} | Business template`,
 			generateDescription: ({ doc, locale, ...docInfo }: any) =>

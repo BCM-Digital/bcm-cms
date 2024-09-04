@@ -14,22 +14,17 @@ import {
 } from '../../blocks'
 
 import { slugField } from '../../fields/slug'
-import { populateArchiveBlock } from '../../hooks/populateArchiveBlock'
-import { populatePublishedAt } from '../../hooks/populatePublishedAt'
-import { populateAuthor } from './hooks/populateAuthor'
-import { revalidatePost } from './hooks/revalidatePost'
+import { revalidateArticle } from './hooks/revalidateArticle'
 
-const Posts: CollectionConfig = {
-	slug: 'posts',
+const Articles: CollectionConfig = {
+	slug: 'news',
 	admin: {
 		useAsTitle: 'title',
-		defaultColumns: ['title', 'slug', 'updatedAt'],
+		defaultColumns: ['title', 'createdAt', 'status'],
 		group: 'Content',
 	},
 	hooks: {
-		beforeChange: [populatePublishedAt],
-		afterChange: [revalidatePost],
-		afterRead: [populateArchiveBlock, populateAuthor],
+		afterChange: [revalidateArticle],
 	},
 	versions: {
 		drafts: true,
@@ -46,6 +41,15 @@ const Posts: CollectionConfig = {
 			type: 'text',
 			required: true,
 		},
+		{
+			name: 'thumbnail',
+			type: 'upload',
+			relationTo: 'media',
+			admin: {
+				position: 'sidebar',
+			},
+		},
+		slugField(),
 		{
 			name: 'categories',
 			type: 'relationship',
@@ -76,39 +80,6 @@ const Posts: CollectionConfig = {
 			},
 		},
 		{
-			name: 'authors',
-			type: 'relationship',
-			relationTo: 'users',
-			hasMany: true,
-			admin: {
-				position: 'sidebar',
-			},
-		},
-		// This field is only used to populate the user data via the `populateAuthors` hook
-		// This is because the `user` collection has access control locked to protect user privacy
-		// GraphQL will also not return mutated user data that differs from the underlying schema
-		{
-			name: 'populatedAuthor',
-			type: 'array',
-			admin: {
-				readOnly: true,
-				disabled: true,
-			},
-			access: {
-				update: () => false,
-			},
-			fields: [
-				{
-					name: 'id',
-					type: 'text',
-				},
-				{
-					name: 'name',
-					type: 'text',
-				},
-			],
-		},
-		{
 			type: 'tabs',
 			tabs: [
 				{
@@ -136,9 +107,9 @@ const Posts: CollectionConfig = {
 			],
 		},
 		{
-			name: 'relatedPosts',
+			name: 'relatedArticles',
 			type: 'relationship',
-			relationTo: 'posts',
+			relationTo: 'news',
 			hasMany: true,
 			filterOptions: ({ id }) => {
 				return {
@@ -148,8 +119,7 @@ const Posts: CollectionConfig = {
 				}
 			},
 		},
-		slugField(),
 	],
 }
 
-export default Posts
+export default Articles

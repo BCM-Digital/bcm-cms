@@ -3,11 +3,8 @@ import type { Block } from 'payload/types'
 import richText from '../fields/richText'
 
 export const ArchiveBlock: Block = {
-	slug: 'archive',
-	labels: {
-		singular: 'Archive',
-		plural: 'Archives',
-	},
+	slug: 'archive-block',
+	interfaceName: 'ArchiveBlock',
 	fields: [
 		{
 			name: 'archiveBlockFields',
@@ -36,15 +33,15 @@ export const ArchiveBlock: Block = {
 					type: 'select',
 					name: 'relationTo',
 					label: 'Collections To Show',
-					defaultValue: 'posts',
+					defaultValue: 'news',
 					admin: {
 						condition: (_, siblingData) =>
 							siblingData.populateBy === 'collection',
 					},
 					options: [
 						{
-							label: 'Posts',
-							value: 'posts',
+							label: 'News Articles',
+							value: 'news',
 						},
 						{
 							label: 'Projects',
@@ -78,7 +75,7 @@ export const ArchiveBlock: Block = {
 					type: 'relationship',
 					name: 'selectedDocs',
 					label: 'Selection',
-					relationTo: ['posts', 'projects'],
+					relationTo: ['news', 'projects'],
 					hasMany: true,
 					admin: {
 						condition: (_, siblingData) =>
@@ -89,7 +86,7 @@ export const ArchiveBlock: Block = {
 					type: 'relationship',
 					name: 'populatedDocs',
 					label: 'Populated Docs',
-					relationTo: ['posts', 'projects'],
+					relationTo: ['news', 'projects'],
 					hasMany: true,
 					admin: {
 						disabled: true,
