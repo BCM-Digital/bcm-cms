@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload/types'
+import { CollectionConfig } from 'payload/types'
 
 import { isAdmin } from '../../access/isAdmin'
 import { isAdminsOrPublished } from '../../access/isAdminsOrPublished'
@@ -14,32 +14,39 @@ import {
 } from '../../blocks'
 
 import { slugField } from '../../fields/slug'
-import { revalidateArticle } from './hooks/revalidateArticle'
+import { revalidatePost } from './hooks/revalidatePost'
 
-const Articles: CollectionConfig = {
-	slug: 'news',
+const Posts: CollectionConfig = {
+	slug: 'posts',
+	labels: {
+		singular: 'News Article',
+		plural: 'News Articles'
+	},
 	admin: {
 		useAsTitle: 'title',
 		defaultColumns: ['title', 'createdAt', 'status'],
 		group: 'Content',
 	},
-	hooks: {
-		afterChange: [revalidateArticle],
+	access: {
+		create: isAdmin,
+		read: isAdminsOrPublished,
+		readVersions: isAdmin,
+		update: isAdmin,
+		delete: isAdmin,
 	},
 	versions: {
 		drafts: true,
 	},
-	access: {
-		read: isAdminsOrPublished,
-		update: isAdmin,
-		create: isAdmin,
-		delete: isAdmin,
+	hooks: {
+		afterChange: [revalidatePost],
 	},
 	fields: [
 		{
 			name: 'title',
+			label: 'Title',
 			type: 'text',
 			required: true,
+			localized: true,
 		},
 		{
 			name: 'thumbnail',
@@ -64,9 +71,6 @@ const Articles: CollectionConfig = {
 			type: 'date',
 			admin: {
 				position: 'sidebar',
-				date: {
-					pickerAppearance: 'dayAndTime',
-				},
 			},
 			hooks: {
 				beforeChange: [
@@ -83,7 +87,7 @@ const Articles: CollectionConfig = {
 			type: 'tabs',
 			tabs: [
 				{
-					label: 'Hero',
+					label: 'Page Header',
 					fields: [pageHead],
 				},
 				{
@@ -92,7 +96,6 @@ const Articles: CollectionConfig = {
 						{
 							name: 'layout',
 							type: 'blocks',
-							required: true,
 							blocks: [
 								CardsBlock,
 								ContactFormBlock,
@@ -107,9 +110,9 @@ const Articles: CollectionConfig = {
 			],
 		},
 		{
-			name: 'relatedArticles',
+			name: 'relatedPosts',
 			type: 'relationship',
-			relationTo: 'news',
+			relationTo: 'posts',
 			hasMany: true,
 			filterOptions: ({ id }) => {
 				return {
@@ -122,4 +125,4 @@ const Articles: CollectionConfig = {
 	],
 }
 
-export default Articles
+export default Posts

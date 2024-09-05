@@ -16,7 +16,7 @@ import { buildConfig } from 'payload/config'
 import Categories from './collections/Categories'
 import Media from './collections/Media'
 import Pages from './collections/Pages'
-import Articles from './collections/Articles'
+import Posts from './collections/Posts'
 import Projects from './collections/Projects'
 import Users from './collections/Users'
 
@@ -24,7 +24,6 @@ import Users from './collections/Users'
 import Contact from './globals/Contact'
 import Header from './globals/Header'
 import Footer from './globals/Footer'
-import Settings from './globals/Settings'
 import EmailHtml from './utilities/EmailHtml'
 
 const generateTitle: GenerateTitle = () => {
@@ -43,7 +42,7 @@ export default buildConfig({
 		user: Users.slug,
 		bundler: webpackBundler(),
 		livePreview: {
-			collections: ['pages', 'projects'],
+			collections: ['pages',],
 			url: ({ data, documentInfo, locale }) =>
 				`${PAYLOAD_PUBLIC_NEXT_SERVER_URL}/${
 					data.slug !== 'home' ? data.slug : ''
@@ -81,8 +80,8 @@ export default buildConfig({
 		url: process.env.DATABASE_URI,
 	}),
 	serverURL: PAYLOAD_PUBLIC_SERVER_URL,
-	collections: [Pages, Projects, Articles, Media, Categories, Users],
-	globals: [Header, Contact, Footer, Settings],
+	collections: [Pages, Projects, Posts, Media, Categories, Users],
+	globals: [Header, Contact, Footer],
 	rateLimit: {
 		trustProxy: true,
 		window: 2 * 60 * 1000, // 2 minutes
@@ -120,9 +119,9 @@ export default buildConfig({
 			},
 		}),
 		seo({
-			collections: ['pages', 'projects', 'news'],
+			collections: ['pages', 'projects', 'posts'],
 			generateTitle: ({ doc, locale, ...docInfo }: any) =>
-				`${doc?.title?.value} | Business template`,
+				`${doc?.title?.value} | BCM`,
 			generateDescription: ({ doc, locale, ...docInfo }: any) =>
 				doc?.excerpt?.value,
 

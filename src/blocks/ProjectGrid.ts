@@ -31,6 +31,10 @@ export const ProjectGrid: Block = {
 									value: 'project',
 								},
 								{
+									label: 'News Article',
+									value: 'newsArticle',
+								},
+								{
 									label: 'Image',
 									value: 'image',
 								},
@@ -74,6 +78,15 @@ export const ProjectGrid: Block = {
 							relationTo: 'projects',
 							admin: {
 								condition: (_, siblingData) => siblingData.type === 'project',
+							},
+						},
+						{
+							name: 'post',
+							label: 'News Article',
+							type: 'relationship',
+							relationTo: 'posts',
+							admin: {
+								condition: (_, siblingData) => siblingData.type === 'newsArticle',
 							},
 						},
 						{

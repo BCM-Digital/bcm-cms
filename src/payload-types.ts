@@ -47,7 +47,7 @@ export interface Config {
   collections: {
     pages: Page;
     projects: Project;
-    news: News;
+    posts: Post;
     media: Media;
     categories: Category;
     users: User;
@@ -60,7 +60,6 @@ export interface Config {
     header: Header;
     contact: Contact;
     footer: Footer;
-    settings: Setting;
   };
 }
 /**
@@ -135,8 +134,8 @@ export interface Link {
         value: string | Project;
       } | null)
     | ({
-        relationTo: 'news';
-        value: string | News;
+        relationTo: 'posts';
+        value: string | Post;
       } | null);
   url?: string | null;
   label: string;
@@ -609,9 +608,9 @@ export interface TabsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news".
+ * via the `definition` "posts".
  */
-export interface News {
+export interface Post {
   id: string;
   title: string;
   thumbnail?: string | Media | null;
@@ -619,8 +618,8 @@ export interface News {
   categories?: (string | Category)[] | null;
   publishedAt?: string | null;
   pageHead?: PageHead;
-  layout: (CardsBlock | ContactFormBlock | ImageSliderBlock | MediaAndContentBlock | MediaBlock | TabsBlock)[];
-  relatedArticles?: (string | News)[] | null;
+  layout?: (CardsBlock | ContactFormBlock | ImageSliderBlock | MediaAndContentBlock | MediaBlock | TabsBlock)[] | null;
+  relatedPosts?: (string | Post)[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -652,14 +651,14 @@ export interface ArchiveBlock {
       [k: string]: unknown;
     } | null;
     populateBy?: ('collection' | 'selection') | null;
-    relationTo?: ('news' | 'projects') | null;
+    relationTo?: ('posts' | 'projects') | null;
     categories?: (string | Category)[] | null;
     limit?: number | null;
     selectedDocs?:
       | (
           | {
-              relationTo: 'news';
-              value: string | News;
+              relationTo: 'posts';
+              value: string | Post;
             }
           | {
               relationTo: 'projects';
@@ -670,8 +669,8 @@ export interface ArchiveBlock {
     populatedDocs?:
       | (
           | {
-              relationTo: 'news';
-              value: string | News;
+              relationTo: 'posts';
+              value: string | Post;
             }
           | {
               relationTo: 'projects';
@@ -707,10 +706,11 @@ export interface ProjectGrid {
       [k: string]: unknown;
     } | null;
     tiles: {
-      type?: ('project' | 'image' | 'text') | null;
+      type?: ('project' | 'newsArticle' | 'image' | 'text') | null;
       width?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
       height?: boolean | null;
       project?: (string | null) | Project;
+      post?: (string | null) | Post;
       image?: string | Media | null;
       tileText?: {
         root: {
@@ -921,24 +921,6 @@ export interface Footer {
  */
 export interface Menu {
   menuItem?: MenuItem;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "settings".
- */
-export interface Setting {
-  id: string;
-  pageSettings?: PageSettings;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PageSettings".
- */
-export interface PageSettings {
-  newsPage?: (string | null) | Page;
-  projectsPage?: (string | null) | Page;
 }
 
 
