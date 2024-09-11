@@ -1,5 +1,6 @@
 import { Block } from 'payload/types'
 import richText from '../fields/richText'
+import link from '../fields/link'
 
 export const ProjectGrid: Block = {
 	slug: 'project-grid',
@@ -86,7 +87,8 @@ export const ProjectGrid: Block = {
 							type: 'relationship',
 							relationTo: 'posts',
 							admin: {
-								condition: (_, siblingData) => siblingData.type === 'newsArticle',
+								condition: (_, siblingData) =>
+									siblingData.type === 'newsArticle',
 							},
 						},
 						{
@@ -103,6 +105,16 @@ export const ProjectGrid: Block = {
 							label: 'Tile Text',
 							admin: {
 								condition: (_, siblingData) => siblingData.type === 'text',
+							},
+						}),
+						link({
+							appearances: false,
+							overrides: {
+								label: false,
+								admin: {
+									condition: (_, siblingData) =>
+										siblingData.type === 'text' || siblingData.type === 'image',
+								},
 							},
 						}),
 						{

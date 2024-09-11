@@ -650,35 +650,8 @@ export interface ArchiveBlock {
       };
       [k: string]: unknown;
     } | null;
-    populateBy?: ('collection' | 'selection') | null;
     relationTo?: ('posts' | 'projects') | null;
     categories?: (string | Category)[] | null;
-    limit?: number | null;
-    selectedDocs?:
-      | (
-          | {
-              relationTo: 'posts';
-              value: string | Post;
-            }
-          | {
-              relationTo: 'projects';
-              value: string | Project;
-            }
-        )[]
-      | null;
-    populatedDocs?:
-      | (
-          | {
-              relationTo: 'posts';
-              value: string | Post;
-            }
-          | {
-              relationTo: 'projects';
-              value: string | Project;
-            }
-        )[]
-      | null;
-    populatedDocsTotal?: number | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -727,6 +700,7 @@ export interface ProjectGrid {
         };
         [k: string]: unknown;
       } | null;
+      link?: Link;
       invertBackground?: boolean | null;
       id?: string | null;
     }[];

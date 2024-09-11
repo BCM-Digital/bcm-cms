@@ -20,7 +20,7 @@ const Posts: CollectionConfig = {
 	slug: 'posts',
 	labels: {
 		singular: 'News Article',
-		plural: 'News Articles'
+		plural: 'News Articles',
 	},
 	admin: {
 		useAsTitle: 'title',
