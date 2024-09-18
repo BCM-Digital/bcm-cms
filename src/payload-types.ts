@@ -700,6 +700,7 @@ export interface ProjectGrid {
         };
         [k: string]: unknown;
       } | null;
+      addLink?: boolean | null;
       link?: Link;
       invertBackground?: boolean | null;
       id?: string | null;

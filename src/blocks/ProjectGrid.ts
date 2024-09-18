@@ -107,13 +107,21 @@ export const ProjectGrid: Block = {
 								condition: (_, siblingData) => siblingData.type === 'text',
 							},
 						}),
+						{
+							name: 'addLink',
+							label: 'Add Tile Link',
+							type: 'checkbox',
+							admin: {
+								condition: (_, siblingData) =>
+									siblingData.type === 'text' || siblingData.type === 'image',
+							},
+						},
 						link({
 							appearances: false,
 							overrides: {
 								label: false,
 								admin: {
-									condition: (_, siblingData) =>
-										siblingData.type === 'text' || siblingData.type === 'image',
+									condition: (_, siblingData) => siblingData.addLink,
 								},
 							},
 						}),
@@ -125,6 +133,27 @@ export const ProjectGrid: Block = {
 							},
 						},
 					],
+					admin: {
+						components: {
+							RowLabel: ({ data }) => {
+								const typeOptions = {
+									project: 'Project',
+									newsArticle: 'News Article',
+									image: 'Image',
+									text: 'Text'
+								};
+								let label = typeOptions[data.type] || data.type;
+								
+								if (data.type === 'project' && data.project?.title) {
+									label = `Project: ${data.project.title}`;
+								} else if (data.type === 'newsArticle' && data.post?.title) {
+									label = `News Article: ${data.post.title}`;
+								}
+								
+								return `Tile: ${label}`;
+							}
+						}
+					}
 				},
 			],
 		},
